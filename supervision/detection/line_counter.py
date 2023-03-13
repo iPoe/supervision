@@ -81,6 +81,8 @@ class LineZoneAnnotator:
         text_scale: float = 0.5,
         text_offset: float = 1.5,
         text_padding: int = 10,
+        custom_in_text: str = '',
+        custom_out_text: str = '',
     ):
         """
         Initialize the LineCounterAnnotator object with default values.
@@ -102,6 +104,8 @@ class LineZoneAnnotator:
         self.text_scale: float = text_scale
         self.text_offset: float = text_offset
         self.text_padding: int = text_padding
+        self.custom_in_text: str = custom_in_text
+        self.custom_out_text: str = custom_out_text
 
     def annotate(self, frame: np.ndarray, line_counter: LineZone) -> np.ndarray:
         """
@@ -141,8 +145,8 @@ class LineZoneAnnotator:
             lineType=cv2.LINE_AA,
         )
 
-        in_text = f"in: {line_counter.in_count}"
-        out_text = f"out: {line_counter.out_count}"
+        in_text = f"in: {line_counter.in_count}" if self.custom_in_text.len() == 0 else f"{self.custom_in_text}: {line_counter.in_count}"
+        out_text = f"in: {line_counter.out_count}" if self.custom_out_text.len() == 0 else f"{self.custom_out_text}: {line_counter.out_count}"
 
         (in_text_width, in_text_height), _ = cv2.getTextSize(
             in_text, cv2.FONT_HERSHEY_SIMPLEX, self.text_scale, self.text_thickness
